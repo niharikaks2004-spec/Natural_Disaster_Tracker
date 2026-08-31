@@ -24,6 +24,10 @@ body.light {
   --border:rgba(0,0,0,0.08); --border2:rgba(0,0,0,0.14);
   --text:#141926; --text2:#4a5268; --muted:#8a95ae;
 }
+  /* Dark OSM basemap — no API key required */
+.leaflet-tile.dark-map-tiles {
+    filter: invert(90%) hue-rotate(180deg) brightness(70%) contrast(90%);
+}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;overflow:hidden}
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);transition:background .3s,color .3s}
@@ -403,7 +407,11 @@ function applyTile(key){
   if(!TILES[key]) return;
   currentTile=key;
   map.removeLayer(tileLayer);
-  tileLayer=L.tileLayer(TILES[key][0],{attribution:TILES[key][1],maxZoom:19}).addTo(map);
+  tileLayer = L.tileLayer(TILES[key][0], {
+    attribution: TILES[key][1],
+    maxZoom: 19,
+    className: key === 'dark' ? 'dark-map-tiles' : ''
+}).addTo(map);
   document.querySelectorAll('.tile-opt').forEach(el=>{
     el.classList.toggle('active',el.dataset.tile===key);
   });
